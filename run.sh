@@ -1,20 +1,17 @@
 #!/bin/bash
 
 get_latest_version() {
-	local uri
-	local version
-	uri="https://api.github.com/repos/jpillora/cloud-torrent/releases/latest"
-	version=$(
-		curl -s "$uri" |
-			grep -oP '"tag_name": "\K(.*)(?=")'
-	)
-	echo "$version"
+    local uri
+    local version
+    uri="https://api.github.com/repos/jpillora/cloud-torrent/releases/latest"
+    version=$(curl -s "$uri" | grep -oP '"tag_name": "\\K(.\*)(?=")')
+    echo "$version"
 }
 
 get_url() {
-	local version
-	version=$(get_latest_version)
-	echo "https://github.com/jpillora/cloud-torrent/releases/download/"$version"/cloud-torrent_linux_amd64.gz"
+    local version
+    version=$(get_latest_version)
+    echo "https://github.com/jpillora/cloud-torrent/releases/download/$version/cloud-torrent_linux_amd64"
 }
 
 get_host() {
@@ -23,9 +20,8 @@ get_host() {
 	echo "$host:$PORT" | tr -d ' '
 }
 
-wget -q $(get_url) -O blacky-rent.gz
-gunzip blacky-rent.gz
-chmod +x blacky-rent
+wget -q $(get_url) -O cloud-torrent
+chmod +x cloud-torrent
 
 auto_pinger() {
 	host=$(get_host)
