@@ -24,19 +24,17 @@ wget -q $(get_url) -O cloud-torrent
 chmod +x cloud-torrent
 
 auto_pinger() {
-	host=$(get_host)
-	./blacky-rent &
-	P1=$!
-	while :; do
-		sleep 1200
-		curl --silent --url "$host"
-	done &
-	P2=$!
-	wait $P1 $P2
+    host=$(get_host)
+    ./cloud-torrent & P1=$!
+    while :; do
+        sleep 1200
+        curl --silent --url "$host"
+    done & P2=$!
+    wait $P1 $P2
 }
 
 if "$PINGER"; then
-	auto_pinger
+    auto_pinger
 else
-	./blacky-rent
+    ./cloud-torrent
 fi
